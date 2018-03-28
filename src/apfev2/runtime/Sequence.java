@@ -39,7 +39,7 @@ public class Sequence implements Acceptor {
     @Override
     public Accepted accept(CharBuffer cbuf) {
         Collection<Accepted> accepted = null;
-        Accepted acci;
+        Accepted acci = null;
         for (Acceptor acceptor : acceptors) {
             acci = acceptor.accept(cbuf);
             if (null == acci) {
