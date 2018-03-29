@@ -25,6 +25,7 @@ package apfev2.runtime;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import static apfev2.runtime.Util.isNull;
 
 /**
  *
@@ -39,22 +40,24 @@ public class Sequence implements Acceptor {
     @Override
     public Accepted accept(CharBuffer cbuf) {
         Collection<Accepted> accepted = null;
-        Accepted acci = null;
+        Accepted acci;
+        final Location loc = cbuf.getLocation();
         for (Acceptor acceptor : acceptors) {
             acci = acceptor.accept(cbuf);
-            if (null == acci) {
+            if (isNull(acci)) {
                 return null;
             }
-            if (null == accepted) {
+            if (isNull(accepted)) {
                 accepted = new ArrayList<>(acceptors.length);
             }
             accepted.add(acci);
         }
-        return new MyAccepted(accepted);
+        return new MyAccepted(loc, accepted);
     }
     
-    public static class MyAccepted implements Accepted {
-        private MyAccepted(Collection<Accepted> accepted) {
+    public static class MyAccepted extends Accepted {
+        private MyAccepted(Location loc, Collection<Accepted> accepted) {
+            super(loc);
             this.accepted = accepted.toArray(new Accepted[0]);
         }
         

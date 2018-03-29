@@ -32,6 +32,23 @@ public class FileCharBuffer extends CharBuffer {
         initialize();
     }
 
+    public class Mark extends CharBuffer.Mark {
+        public Mark(String filename, CharBuffer.Mark mark) {
+            super(mark);
+            this.filename = filename;
+        }
+        public final String filename;
+    }
+
+    public Mark getMark() {
+        return new Mark(filename, super.getMark());
+    }
+
+    @Override
+    public Location getLocation() {
+        return new Location(filename, getLine(), getCol());
+    }
+
     private static final int LF = '\r';
 
     private void initialize() throws IOException {
@@ -41,7 +58,7 @@ public class FileCharBuffer extends CharBuffer {
         for (int loop = 0; loop < 2; loop++) {
             BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(filename)));
             int charCount = 0;
-            int nchars = 0;
+            int nchars;
             while ((nchars = reader.read(cbuf)) > -1) {
                 for (int i = 0; i < nchars; i++) {
                     if (LF != cbuf[i]) {

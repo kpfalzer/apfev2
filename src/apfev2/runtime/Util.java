@@ -20,44 +20,17 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
- */
-package apfev2.runtime;
-import static apfev2.runtime.Util.isNonNull;
-
-/**
  *
- * @author kpfalzer
  */
-public class PrioritizedChoice implements Acceptor {
 
-    public PrioritizedChoice(Acceptor... choices) {
-        this.choices = choices;
+package apfev2.runtime;
+
+public class Util {
+    public static boolean isNull(Object obj) {
+        return (null == obj);
     }
 
-    @Override
-    public Accepted accept(CharBuffer cbuf) {
-        Accepted acci;
-        //todo: use ParallelStream?
-        final Location loc = cbuf.getLocation();
-        for (int i = 0; i < choices.length; i++) {
-            acci = choices[i].accept(cbuf);
-            if (isNonNull(acci)) {
-                return new MyAccepted(loc, i, acci);
-            }
-        }
-        return null;
+    public static boolean isNonNull(Object obj) {
+        return !isNull(obj);
     }
-    
-    public static class MyAccepted extends Accepted {
-        private MyAccepted(Location loc, int i, Accepted accepted) {
-            super(loc);
-            this.i = i;
-            this.choice = accepted;
-        }
-        
-        private final int i;
-        private final Accepted choice;
-    }
-    
-    private final Acceptor[] choices;
 }

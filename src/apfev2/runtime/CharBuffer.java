@@ -22,6 +22,8 @@
  * THE SOFTWARE.
  */
 package apfev2.runtime;
+import static apfev2.runtime.Util.isNull;
+
 
 /**
  *
@@ -39,28 +41,36 @@ public class CharBuffer {
     }
 
     protected void setBuf(char buf[]) {
-        assert (null == this.buf);
+        assert (isNull(this.buf));
         this.buf = buf;
     }
 
-    public class Mark {
-        public Mark() {
-            this.pos = CharBuffer.this.pos;
-            this.col = CharBuffer.this.col;
-            this.lineNum = CharBuffer.this.lineNum;
+    public Location getLocation() {
+        return new Location(line, col);
+    }
+
+    public static class Mark {
+        public Mark(int pos, int line, int col) {
+            this.pos = pos;
+            this.col = col;
+            this.line = line;
         }
 
-        public final int pos, lineNum, col;
+        public Mark(Mark mark) {
+            this(mark.pos, mark.line, mark.col);
+        }
+
+        public final int pos, line, col;
     }
 
     public Mark getMark() {
-        return new Mark();
+        return new Mark(pos, line, col);
     }
 
     public void setMark(Mark mark) {
         this.pos = mark.pos;
         this.col = mark.col;
-        this.lineNum = mark.lineNum;
+        this.line = mark.line;
     }
 
     public boolean isEOF(int la) {
@@ -92,7 +102,7 @@ public class CharBuffer {
         int rval = peek(la);
         for (la++; 0 < la; la--) {
             if (EOLN == buf[pos]) {
-                lineNum++;
+                line++;
                 col = 0;
             }
             col++;
@@ -119,11 +129,19 @@ public class CharBuffer {
         return true;
     }
 
+    public int getLine() {
+        return line;
+    }
+
+    public int getCol() {
+        return col;
+    }
+
     /**
      * Current position in buf.
      */
     private int pos = 0;
-    private int lineNum = 1;
+    private int line = 1;
     private int col = 1;
     private char buf[] = null;
     

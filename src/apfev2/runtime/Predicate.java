@@ -22,42 +22,23 @@
  * THE SOFTWARE.
  */
 package apfev2.runtime;
-import static apfev2.runtime.Util.isNonNull;
 
 /**
- *
- * @author kpfalzer
+ * Test if acceptor would be accepted.
+ * No chars are actually consumed.
  */
-public class PrioritizedChoice implements Acceptor {
-
-    public PrioritizedChoice(Acceptor... choices) {
-        this.choices = choices;
+public class Predicate implements Acceptor {
+    public Predicate(Acceptor acceptor) {
+        this.acceptor = acceptor;
     }
+
+    private final Acceptor acceptor;
 
     @Override
     public Accepted accept(CharBuffer cbuf) {
-        Accepted acci;
-        //todo: use ParallelStream?
-        final Location loc = cbuf.getLocation();
-        for (int i = 0; i < choices.length; i++) {
-            acci = choices[i].accept(cbuf);
-            if (isNonNull(acci)) {
-                return new MyAccepted(loc, i, acci);
-            }
-        }
-        return null;
+        final CharBuffer.Mark start = cbuf.getMark();
+        final Accepted test = acceptor.accept(cbuf);
+        cbuf.setMark(start);
+        return test;
     }
-    
-    public static class MyAccepted extends Accepted {
-        private MyAccepted(Location loc, int i, Accepted accepted) {
-            super(loc);
-            this.i = i;
-            this.choice = accepted;
-        }
-        
-        private final int i;
-        private final Accepted choice;
-    }
-    
-    private final Acceptor[] choices;
 }

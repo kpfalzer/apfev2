@@ -25,6 +25,8 @@ package apfev2.runtime;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import static apfev2.runtime.Util.isNull;
+
 
 /**
  *
@@ -41,16 +43,18 @@ public class Repetition implements Acceptor {
     public Accepted accept(CharBuffer cbuf) {
         Collection<Accepted> accepted = new ArrayList<>();
         Accepted acci;
+        final Location loc = cbuf.getLocation();
         while (true) {
             acci = acceptor.accept(cbuf);
-            if (null == acci) break;
+            if (isNull(acci)) break;
             accepted.add(acci);
         }
-        return (isOneOrMore && accepted.isEmpty()) ? null : new MyAccepted(accepted);
+        return (isOneOrMore && accepted.isEmpty()) ? null : new MyAccepted(loc, accepted);
     }
     
-    public static class MyAccepted implements Accepted {
-        private MyAccepted(Collection<Accepted> accepted) {
+    public static class MyAccepted extends Accepted {
+        private MyAccepted(Location loc, Collection<Accepted> accepted) {
+            super(loc);
             this.accepted = accepted.toArray(new Accepted[0]);
         }
         

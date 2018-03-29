@@ -27,6 +27,10 @@ package apfev2.runtime;
  *
  * @author kpfalzer
  */
-public interface Accepted {
-    
+public abstract class Accepted {
+    protected Accepted(Location loc) {
+        location = loc;
+    }
+
+    public final Location location;
 }

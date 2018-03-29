@@ -21,43 +21,35 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 package apfev2.runtime;
-import static apfev2.runtime.Util.isNonNull;
 
-/**
- *
- * @author kpfalzer
- */
-public class PrioritizedChoice implements Acceptor {
+public class CharSequence implements Acceptor {
 
-    public PrioritizedChoice(Acceptor... choices) {
-        this.choices = choices;
+    public CharSequence(String toMatch) {
+        this.toMatch = toMatch;
     }
+
+    private final String toMatch;
 
     @Override
     public Accepted accept(CharBuffer cbuf) {
-        Accepted acci;
-        //todo: use ParallelStream?
-        final Location loc = cbuf.getLocation();
-        for (int i = 0; i < choices.length; i++) {
-            acci = choices[i].accept(cbuf);
-            if (isNonNull(acci)) {
-                return new MyAccepted(loc, i, acci);
-            }
+        if (cbuf.match(toMatch)) {
+            final Location loc = cbuf.getLocation();
+            cbuf.accept(toMatch.length());
+            return new MyAccepted(loc);
         }
         return null;
     }
-    
-    public static class MyAccepted extends Accepted {
-        private MyAccepted(Location loc, int i, Accepted accepted) {
+
+    public class MyAccepted extends Accepted {
+        public MyAccepted(Location loc) {
             super(loc);
-            this.i = i;
-            this.choice = accepted;
         }
-        
-        private final int i;
-        private final Accepted choice;
+
+        @Override
+        public String toString() {
+            return CharSequence.this.toMatch;
+        }
     }
-    
-    private final Acceptor[] choices;
 }

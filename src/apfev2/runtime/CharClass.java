@@ -20,44 +20,54 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
+ *
  */
+
 package apfev2.runtime;
 import static apfev2.runtime.Util.isNonNull;
 
 /**
- *
- * @author kpfalzer
+ * Accept single char: in range or oneOf.
  */
-public class PrioritizedChoice implements Acceptor {
+public class CharClass implements Acceptor {
 
-    public PrioritizedChoice(Acceptor... choices) {
-        this.choices = choices;
+    public CharClass(char lo, char hi) {
+        assert (lo <= hi);
+        this.lo = lo;
+        this.hi = hi;
     }
+
+    public CharClass(String oneOf) {
+        this.oneOf = oneOf;
+    }
+
+    private char lo = 0, hi = 0;
+    private String oneOf = null;
 
     @Override
     public Accepted accept(CharBuffer cbuf) {
-        Accepted acci;
-        //todo: use ParallelStream?
         final Location loc = cbuf.getLocation();
-        for (int i = 0; i < choices.length; i++) {
-            acci = choices[i].accept(cbuf);
-            if (isNonNull(acci)) {
-                return new MyAccepted(loc, i, acci);
-            }
+        char ch = (char) cbuf.peek();
+        boolean ok;
+        if (isNonNull(oneOf)) {
+            ok = (0 <= oneOf.indexOf(ch));
+        } else {
+            ok = (lo <= ch) && (hi >= ch);
+        }
+        if (ok) {
+            cbuf.accept();
+            return new MyAccepted(loc, ch);
         }
         return null;
     }
-    
+
     public static class MyAccepted extends Accepted {
-        private MyAccepted(Location loc, int i, Accepted accepted) {
+        private MyAccepted(Location loc, char ch) {
             super(loc);
-            this.i = i;
-            this.choice = accepted;
+            this.ch = ch;
         }
-        
-        private final int i;
-        private final Accepted choice;
+
+        public final char ch;
+
     }
-    
-    private final Acceptor[] choices;
 }
