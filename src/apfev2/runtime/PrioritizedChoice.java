@@ -51,12 +51,12 @@ public class PrioritizedChoice implements Acceptor {
     public static class MyAccepted extends Accepted {
         private MyAccepted(Location loc, int i, Accepted accepted) {
             super(loc);
-            this.i = i;
+            this.which = i;
             this.choice = accepted;
         }
         
-        private final int i;
-        private final Accepted choice;
+        public final int which;
+        public final Accepted choice;
     }
     
     private final Acceptor[] choices;

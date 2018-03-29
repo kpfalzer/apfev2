@@ -58,7 +58,7 @@ public class Repetition implements Acceptor {
             this.accepted = accepted.toArray(new Accepted[0]);
         }
         
-        private final Accepted[] accepted;
+        public final Accepted[] accepted;
     }
     
     private final Acceptor acceptor;

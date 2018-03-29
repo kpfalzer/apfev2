@@ -42,9 +42,11 @@ public class Sequence implements Acceptor {
         Collection<Accepted> accepted = null;
         Accepted acci;
         final Location loc = cbuf.getLocation();
+        final CharBuffer.Mark start = cbuf.getMark();
         for (Acceptor acceptor : acceptors) {
             acci = acceptor.accept(cbuf);
             if (isNull(acci)) {
+                cbuf.setMark(start);
                 return null;
             }
             if (isNull(accepted)) {
@@ -61,7 +63,7 @@ public class Sequence implements Acceptor {
             this.accepted = accepted.toArray(new Accepted[0]);
         }
         
-        private final Accepted[] accepted;
+        public final Accepted[] accepted;
     }
 
     private final Acceptor[] acceptors;
