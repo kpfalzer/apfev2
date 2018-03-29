@@ -30,8 +30,8 @@ import static apfev2.runtime.Util.isNull;
  * @author kpfalzer
  */
 public class CharBuffer {
-    public static final int EOF = -1;
-    public static final int EOLN = '\n';
+    public static final char EOF = 0xff;
+    public static final char EOLN = '\n';
 
     public CharBuffer(char buf[]) {
         this.buf = buf;
@@ -83,11 +83,11 @@ public class CharBuffer {
         return isEOF(0);
     }
 
-    public int peek(int la) {
+    public char peek(int la) {
         return isEOF(la) ? EOF : buf[pos + la];
     }
 
-    public int peek() {
+    public char peek() {
         return peek(0);
     }
 
@@ -97,9 +97,9 @@ public class CharBuffer {
      * @return character at la-th lookahead.
      * Advance current position la+1 positions and update lineNum and col accordingly.
      */
-    public int accept(int la) {
+    public char accept(int la) {
         assert (0 <= la);
-        int rval = peek(la);
+        char rval = peek(la);
         for (la++; 0 < la; la--) {
             if (EOLN == buf[pos]) {
                 line++;
@@ -111,7 +111,7 @@ public class CharBuffer {
         return rval;
     }
 
-    public int accept() {
+    public char accept() {
         return accept(0);
     }
 

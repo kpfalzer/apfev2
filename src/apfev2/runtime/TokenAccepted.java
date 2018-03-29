@@ -25,21 +25,23 @@
 
 package apfev2.runtime;
 
-public class Util {
-    public static boolean isNull(Object obj) {
-        return (null == obj);
+public class TokenAccepted extends Accepted {
+    public TokenAccepted(Location loc, String text, int code) {
+        super(loc);
+        this.text = text;
+        this.code = code;
     }
 
-    public static boolean isNonNull(Object obj) {
-        return !isNull(obj);
+    protected TokenAccepted(Location loc, String text) {
+        this(loc, text, 0);
     }
 
-    public static boolean isAlpha(char ch) {
-        return (ch >= 'a' && ch <= 'z')
-                || (ch >= 'A' && ch <= 'Z');
+    public TokenAccepted(TokenAccepted accepted, int code) {
+        this(accepted.location, accepted.text, code);
     }
 
-    public static boolean isDigit(char ch) {
-        return (ch >= '0' && ch <= '9');
-    }
+    public final String text;
+    public final int code;
 }
+
+
