@@ -32,7 +32,7 @@ import static apfev2.runtime.Util.isAlpha;
 import static apfev2.runtime.Util.isNull;
 
 public class IdOrKeyword implements Acceptor {
-    public static final Integer IDENT = 1;
+    public static final int IDENT = 1;
 
     public IdOrKeyword(Map<String, Integer> tokenCodeByKeyword) {
         this(tokenCodeByKeyword, defaultAcceptor);

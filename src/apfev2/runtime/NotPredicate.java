@@ -20,39 +20,13 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
+ *
  */
+
 package apfev2.runtime;
-import static apfev2.runtime.Util.isNonNull;
-import static apfev2.runtime.Util.isNull;
 
-/**
- * Test if acceptor would be accepted.
- * No chars are actually consumed.
- */
-public class Predicate implements Acceptor {
-    public Predicate(Acceptor acceptor, boolean isNot) {
-        this.acceptor = acceptor;
-        this.isNot = isNot;
-    }
-
-    public Predicate(Acceptor acceptor) {
-        this(acceptor, false);
-    }
-
-    private final Acceptor acceptor;
-    private final boolean isNot;
-
-    @Override
-    public Accepted accept(CharBuffer cbuf) {
-        final CharBuffer.Mark start = cbuf.getMark();
-        final Accepted test = acceptor.accept(cbuf);
-        cbuf.setMark(start);
-        return ((!isNot && isNonNull(test)) || (isNot && isNull(test))) ? new MyAccepted(cbuf) : null;
-    }
-
-    public static class MyAccepted extends Accepted {
-        private MyAccepted(CharBuffer cbuf) {
-            super(cbuf.getLocation());
-        }
+public class NotPredicate extends Predicate {
+    public NotPredicate(Acceptor acceptor) {
+        super(acceptor, true);
     }
 }
