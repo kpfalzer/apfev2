@@ -31,14 +31,14 @@ import static apfev2.runtime.Util.isDigit;
 import static apfev2.runtime.Util.isAlpha;
 import static apfev2.runtime.Util.isNull;
 
-public class IdOrKeyword implements Acceptor {
+public class IdentOrKeyword implements Acceptor {
     public static final int IDENT = 1;
 
-    public IdOrKeyword(Map<String, Integer> tokenCodeByKeyword) {
+    public IdentOrKeyword(Map<String, Integer> tokenCodeByKeyword) {
         this(tokenCodeByKeyword, defaultAcceptor);
     }
 
-    public IdOrKeyword(Map<String, Integer> tokenCodeByKeyword, Acceptor acceptor) {
+    public IdentOrKeyword(Map<String, Integer> tokenCodeByKeyword, Acceptor acceptor) {
         this.tokenCodeByKeyword = tokenCodeByKeyword;
         this.acceptor = acceptor;
     }

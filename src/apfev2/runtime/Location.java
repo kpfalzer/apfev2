@@ -44,8 +44,8 @@ public class Location {
 
     @Override
     public String toString() {
-        return (isNonNull(filename) ? filename : "?")
-                + ":" + line
+        return (isNonNull(filename) ? (filename + ":") : "")
+                + line
                 + ":" + col
                 ;
     }

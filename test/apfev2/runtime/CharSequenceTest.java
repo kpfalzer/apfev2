@@ -20,38 +20,36 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
+ *
  */
 
 package apfev2.runtime;
-import static apfev2.runtime.Util.invariant;
 
-public class CharSequence implements Acceptor {
+import org.junit.jupiter.api.Test;
 
-    public CharSequence(String toMatch) {
-        invariant(!toMatch.isEmpty());
-        this.toMatch = toMatch;
-    }
+import static org.junit.jupiter.api.Assertions.*;
 
-    private final String toMatch;
+class CharSequenceTest {
 
-    @Override
-    public Accepted accept(CharBuffer cbuf) {
-        if (cbuf.match(toMatch)) {
-            final Location loc = cbuf.getLocation();
-            cbuf.accept(toMatch.length()-1);
-            return new MyAccepted(loc);
-        }
-        return null;
-    }
+    @Test
+    void accept() {
+        final String DATA =
+                "[].foobarX";
 
-    public class MyAccepted extends Accepted {
-        public MyAccepted(Location loc) {
-            super(loc);
-        }
+        final CharBuffer cbuf = new CharBuffer(DATA.toCharArray());
+        final Acceptor acceptors[] = new CharSequence[]{
+                new CharSequence("["),
+                new CharSequence("]"),
+                new CharSequence("."),
+                new CharSequence("foobar"),
+                new CharSequence("X")
+        };
 
-        @Override
-        public String toString() {
-            return CharSequence.this.toMatch;
+        Accepted accepted = null;
+        for (Acceptor acceptor : acceptors) {
+            accepted = acceptor.accept(cbuf);
+            assertNotNull(accepted);
         }
     }
+
 }
