@@ -42,4 +42,10 @@ public class Util {
     public static boolean isDigit(char ch) {
         return (ch >= '0' && ch <= '9');
     }
+
+    public static void invariant(boolean cond) {
+        if (!cond) {
+            throw new RuntimeException("invariant failed");
+        }
+    }
 }
