@@ -40,16 +40,31 @@ public class LeftRecursiveAcceptor implements Acceptor {
      *
      * @param firstNrIx          mark index of first choice (in prioritizedChoices) which is not DLR.
      * @param isDRR              true if Direct Right Recursive.
+     */
+    public LeftRecursiveAcceptor(int firstNonRecursiveIx, boolean isDRR) {
+        this.firstNonRecursiveIx = firstNonRecursiveIx;
+        this.isDRR = isDRR;
+    }
+
+    public LeftRecursiveAcceptor(int firstNonRecursiveIx) {
+        this(firstNonRecursiveIx, false);
+    }
+
+    /**
+     * Initialize acceptor for Direct Left Recursion (DLR).
+     * We initialize separately, because need to construct first to be able
+     * to reference 'this' in recursive sequence.
+     * The order of prioritizedChoices has DLR Sequence first.
+     *
      * @param prioritizedChoices prioritized choices with DLR's first.
      */
-    public LeftRecursiveAcceptor(int firstNrIx, boolean isDRR, Acceptor... prioritizedChoices) {
-        this.firstNonRecursiveIx = firstNrIx;
-        this.isDRR = isDRR;
+    public LeftRecursiveAcceptor initialize(Acceptor... prioritizedChoices) {
         this.prioritizedChoices = prioritizedChoices;
+        return this;
     }
 
     private final int firstNonRecursiveIx;
-    private final Acceptor[] prioritizedChoices;
+    private Acceptor[] prioritizedChoices = null;
     /**
      * True if definite right recursion
      */
@@ -89,7 +104,7 @@ public class LeftRecursiveAcceptor implements Acceptor {
             boolean ok = false;
             //iterate through non left-recursive the first time through and take first match.
             Accepted cand = null;
-            for (int i = firstNonRecursiveIx; !ok; i++) {
+            for (int i = firstNonRecursiveIx; !ok && (i < prioritizedChoices.length); i++) {
                 cand = prioritizedChoices[i].accept(cbuf);
                 ok = isNonNull(cand);
                 if (ok) {
