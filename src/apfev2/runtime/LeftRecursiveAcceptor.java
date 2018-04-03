@@ -159,6 +159,11 @@ public class LeftRecursiveAcceptor implements Acceptor {
             this.accepted = accepted.toArray(new Accepted[0]);
         }
 
+        @Override
+        public String toString() {
+            return Util.toString(accepted);
+        }
+
         public final Accepted[] accepted;
     }
 

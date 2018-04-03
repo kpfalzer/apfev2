@@ -40,6 +40,11 @@ public class TokenAccepted extends Accepted {
         this(accepted.location, accepted.text, code);
     }
 
+    @Override
+    public String toString() {
+        return text;
+    }
+
     public final String text;
     public final int code;
 }

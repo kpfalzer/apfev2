@@ -67,6 +67,11 @@ public class CharClass implements Acceptor {
             this.ch = ch;
         }
 
+        @Override
+        public String toString() {
+            return String.valueOf(ch);
+        }
+
         public final char ch;
 
     }

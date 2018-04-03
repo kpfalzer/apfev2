@@ -48,4 +48,12 @@ public class Util {
             throw new RuntimeException("invariant failed");
         }
     }
+
+    public static String toString(final Accepted accepted[]) {
+        StringBuilder buf = new StringBuilder();
+        for (Accepted acc : accepted) {
+            buf.append(acc.toString());
+        }
+        return buf.toString();
+    }
 }

@@ -54,7 +54,12 @@ public class PrioritizedChoice implements Acceptor {
             this.which = i;
             this.choice = accepted;
         }
-        
+
+        @Override
+        public String toString() {
+            return choice.toString();
+        }
+
         public final int which;
         public final Accepted choice;
     }

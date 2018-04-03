@@ -36,6 +36,7 @@ class LeftRecursiveAcceptorTest {
         final CharBuffer cbuf = new CharBuffer(DATA.toCharArray());
         Accepted accepted = a.accept(cbuf);
         assertNotNull(accepted);
+        assertTrue(DATA.equals(accepted.toString()));
     }
 
     /*
