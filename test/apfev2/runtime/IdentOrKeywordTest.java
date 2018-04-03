@@ -71,5 +71,5 @@ class IdentOrKeywordTest {
         assertNull(SPACING.accept(cbuf));
     }
 
-    private static final Acceptor SPACING = new Repetition(new CharClass(" \t"), true);
+    private static final Acceptor SPACING = new Repetition(new CharClass(" \t"), Repetition.EType.eOneOrMore);
 }

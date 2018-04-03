@@ -25,18 +25,22 @@ package apfev2.runtime;
 
 import java.util.ArrayList;
 import java.util.Collection;
+
 import static apfev2.runtime.Util.isNull;
 
 
 /**
- *
  * @author kpfalzer
  */
 public class Repetition implements Acceptor {
 
-    public Repetition(Acceptor acceptor, boolean isOneOrMore) {
+    public enum EType {eZeroOrOne, eZeroOrMore, eOneOrMore}
+
+    ;
+
+    public Repetition(Acceptor acceptor, EType type) {
         this.acceptor = acceptor;
-        this.isOneOrMore = isOneOrMore;
+        this.type = type;
     }
 
     @Override
@@ -48,10 +52,15 @@ public class Repetition implements Acceptor {
             acci = acceptor.accept(cbuf);
             if (isNull(acci)) break;
             accepted.add(acci);
+            if (EType.eZeroOrOne == type) break;
         }
-        return (isOneOrMore && accepted.isEmpty()) ? null : new MyAccepted(loc, accepted);
+        return (isOneOrMore() && accepted.isEmpty()) ? null : new MyAccepted(loc, accepted);
     }
-    
+
+    public boolean isOneOrMore() {
+        return EType.eOneOrMore == type;
+    }
+
     public static class MyAccepted extends Accepted {
         private MyAccepted(Location loc, Collection<Accepted> accepted) {
             super(loc);
@@ -65,7 +74,7 @@ public class Repetition implements Acceptor {
 
         public final Accepted[] accepted;
     }
-    
+
     private final Acceptor acceptor;
-    private final boolean isOneOrMore;
+    private final EType type;
 }
