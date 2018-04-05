@@ -56,4 +56,34 @@ public class Util {
         }
         return buf.toString();
     }
+
+    public static class Pair<T1,T2> {
+        public Pair() {}
+
+        public Pair(T1 v1, T2 v2) {
+            this.v1 = v1;
+            this.v2 = v2;
+        }
+
+        public T1 v1() {
+            return v1;
+        }
+
+        public T2 v2() {
+            return v2;
+        }
+
+        public Pair v1(T1 v1) {
+            this.v1 = v1;
+            return this;
+        }
+
+        public Pair v2(T2 v2) {
+            this.v2 = v2;
+            return this;
+        }
+
+        private T1 v1 = null;
+        private T2 v2 = null;
+    }
 }

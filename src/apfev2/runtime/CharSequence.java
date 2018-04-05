@@ -32,7 +32,7 @@ public class CharSequence implements Acceptor {
         this.toMatch = toMatch;
     }
 
-    private final String toMatch;
+    public final String toMatch;
 
     @Override
     public Accepted accept(CharBuffer cbuf) {
