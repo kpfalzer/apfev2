@@ -39,6 +39,11 @@ public class Token implements Acceptor {
         this(code, text, null);
     }
 
+    @Override
+    public boolean equals(Object other) {
+        return ((Token)other).code == code;
+    }
+
     public final int code;
     public final CharSequence text;
     public final Acceptor trailing;

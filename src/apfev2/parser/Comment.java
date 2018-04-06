@@ -89,4 +89,7 @@ public class Comment implements Acceptor {
 
         public final String text;
     }
+
+    public static final Acceptor THE_ONE = new Comment();
+
 }
