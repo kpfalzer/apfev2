@@ -20,43 +20,45 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
+ *
  */
 
 package apfev2.runtime;
-import static apfev2.runtime.Util.invariant;
 
-public class CharSequence implements Acceptor {
+import static apfev2.runtime.Util.isNonNull;
+import static apfev2.runtime.Util.isNull;
 
-    public CharSequence(String toMatch) {
-        invariant(!toMatch.isEmpty());
-        this.toMatch = toMatch;
+public class Token implements Acceptor {
+    public Token(int code, String text, Acceptor trailing) {
+        this.code  = code;
+        this.text = new CharSequence(text);
+        this.trailing = trailing;
     }
 
-    private final String toMatch;
-
-    @Override
-    public String toString() {
-        return toMatch;
+    public Token(int code, String text) {
+        this(code, text, null);
     }
+
+    public final int code;
+    public final CharSequence text;
+    public final Acceptor trailing;
 
     @Override
     public Accepted accept(CharBuffer cbuf) {
-        if (cbuf.match(toMatch)) {
-            final Location loc = cbuf.getLocation();
-            cbuf.accept(toMatch.length()-1);
-            return new MyAccepted(loc);
+        final Location loc = cbuf.getLocation();
+        Accepted accepted = text.accept(cbuf);
+        if (isNull(accepted)) {
+            return null;
         }
-        return null;
+        accepted = isNonNull(trailing) ? trailing.accept(cbuf) : null;
+        return getAccepted(loc, accepted);
     }
 
-    public class MyAccepted extends Accepted {
-        public MyAccepted(Location loc) {
-            super(loc);
+    private TokenAccepted getAccepted(Location loc, Accepted trailing) {
+        String text = Token.this.toString();;
+        if (isNonNull(trailing)) {
+            text += trailing.toString();
         }
-
-        @Override
-        public String toString() {
-            return CharSequence.this.toString();
-        }
+        return new TokenAccepted(loc, text, code);
     }
 }

@@ -49,8 +49,4 @@ public class Token {
     public static final Tokens.Code COLON = getCode(16, ":");
     public static final Tokens.Code LCURLY2 = getCode(17, "{{");
     public static final Tokens.Code RCURLY2 = getCode(18, "}}");
-    public static final Tokens.Code SL_COMMENT = getCode(19, "unused");
-    public static final Tokens.Code ML_COMMENT = getCode(20, "unused");
-    public static final Tokens.Code EOLN = getCode(21, "unused");
-
 }
