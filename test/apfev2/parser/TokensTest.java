@@ -25,25 +25,40 @@
 
 package apfev2.parser;
 
-import apfev2.runtime.*;
+import apfev2.runtime.Accepted;
+import apfev2.runtime.Acceptor;
+import apfev2.runtime.CharBuffer;
+import org.junit.jupiter.api.Test;
 
-public class Spacing implements Acceptor {
+import static org.junit.jupiter.api.Assertions.*;
 
-    @Override
-    public Accepted accept(CharBuffer cbuf) {
-        return SPACING.accept(cbuf);
+class TokensTest {
+    @Test
+    void accept() {
+        final String DATA =
+                "/*comment*/  \n"
+                + "<- +   ( )//comment\n"
+                + "*"
+                ;
+
+        final CharBuffer cbuf = new CharBuffer(DATA.toCharArray());
+        Accepted accepted;
+
+        final Acceptor acceptors[] = new Acceptor[]{
+          Spacing.THE_ONE,
+          Tokens.LEFT_ARROW,
+          Tokens.PLUS,
+          Tokens.OPEN,
+          Tokens.CLOSE,
+          Tokens.STAR
+        };
+
+        for (Acceptor acceptor : acceptors) {
+            accepted = acceptor.accept(cbuf);
+            assertNotNull(accepted);
+            System.out.println(accepted.getClass().getName() + ":" + accepted);
+        }
+        assertTrue(cbuf.isEOF());
     }
 
-    private static final Acceptor SPACING = new Repetition(
-            new PrioritizedChoice(
-                    new PrioritizedChoice(
-                            new CharClass(" \t"),
-                            new Eoln()
-                    ),
-                    Comment.THE_ONE
-            ),
-            Repetition.EType.eOneOrMore
-    );
-
-    public static final Acceptor THE_ONE = new Spacing();
 }
