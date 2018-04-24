@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="apfev2:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/jar</output-path>
+    <root id="archive" name="apfev2.jar">
+      <element id="module-output" name="apfev2" />
+    </root>
+  </artifact>
+</component>
