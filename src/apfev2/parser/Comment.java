@@ -74,7 +74,7 @@ public class Comment implements Acceptor {
             if ('\r' != ch) {
                 buf.append(ch);
             }
-            if (CharBuffer.EOLN == ch) {
+            if (CharBuffer.isEOLN(ch)) {
                 break; //while
             }
         }

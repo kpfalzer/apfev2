@@ -30,8 +30,8 @@ import static apfev2.runtime.Util.isNull;
  * @author kpfalzer
  */
 public class CharBuffer {
-    public static final char EOF = 0xff;
-    public static final char EOLN = '\n';
+    private static final char EOF = 0xff;
+    private static final char EOLN = '\n';
 
     public CharBuffer(char buf[]) {
         this.buf = buf;
@@ -91,6 +91,24 @@ public class CharBuffer {
         return peek(0);
     }
 
+    public char peekAndCheckUnexpected(char close) {
+        Error.checkUnexpected(this, close);
+        return peek();
+    }
+
+    public char acceptUnlessUnexpected(char close) {
+        peekAndCheckUnexpected(close);
+        return accept();
+    }
+
+    public boolean isEOLN() {
+        return isEOLN(peek());
+    }
+
+    public static boolean isEOLN(char ch) {
+        return EOLN == ch;
+    }
+
     /**
      * Return character at la-th (lookahead) position.
      * @param la lookahead (>= 0).
@@ -101,7 +119,7 @@ public class CharBuffer {
         assert (0 <= la);
         char rval = peek(la);
         for (la++; 0 < la; la--) {
-            if (EOLN == buf[pos]) {
+            if (isEOLN(buf[pos])) {
                 line++;
                 col = 0;
             }

@@ -26,6 +26,9 @@ package apfev2.runtime;
 
 import java.io.*;
 
+/**
+ * Encapsulate text file as CharBuffer and drop any linefeed ('\r').
+ */
 public class FileCharBuffer extends CharBuffer {
     public FileCharBuffer(String filename) throws IOException {
         this.filename = filename;
