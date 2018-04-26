@@ -86,4 +86,8 @@ public class Util {
         private T1 v1 = null;
         private T2 v2 = null;
     }
+
+    public static <T extends Accepted> T downcast(Accepted accepted) {
+        return (T)accepted;
+    }
 }

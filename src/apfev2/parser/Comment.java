@@ -28,6 +28,7 @@ package apfev2.parser;
 import apfev2.runtime.Accepted;
 import apfev2.runtime.Acceptor;
 import apfev2.runtime.CharBuffer;
+import apfev2.runtime.Error;
 import apfev2.runtime.Location;
 
 public class Comment implements Acceptor {
@@ -57,10 +58,7 @@ public class Comment implements Acceptor {
             }
         }
         if (cbuf.isEOF()) {
-            throw new RuntimeException(
-                    cbuf.getLocation().toString()
-                            + ": Unexpected EOF (missing '*/' in block comment)"
-            );
+            throw Error.unexpectedEOF(cbuf, "*/");
         }
         return new MyAccepted(loc, buf.toString());
     }
