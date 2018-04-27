@@ -60,7 +60,7 @@ public class Token implements Acceptor {
     }
 
     private TokenAccepted getAccepted(Location loc, Accepted trailing) {
-        String text = Token.this.toString();;
+        String text = Token.this.toString();
         if (isNonNull(trailing)) {
             text += trailing.toString();
         }
