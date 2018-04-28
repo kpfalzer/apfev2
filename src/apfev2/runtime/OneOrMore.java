@@ -25,30 +25,8 @@
 
 package apfev2.runtime;
 
-import static apfev2.runtime.Util.isNonNull;
-import static apfev2.runtime.Util.isNull;
-
-public class Token implements Acceptor {
-    public Token(int code, String text) {
-        this.code  = code;
-        this.text = new CharSequence(text);
-    }
-
-    @Override
-    public boolean equals(Object other) {
-        return ((Token)other).code == code;
-    }
-
-    public final int code;
-    public final CharSequence text;
-
-    @Override
-    public Accepted accept(CharBuffer cbuf) {
-        final Location loc = cbuf.getLocation();
-        Accepted accepted = text.accept(cbuf);
-        if (isNull(accepted)) {
-            return null;
-        }
-        return new TokenAccepted(loc, text.toString(), code);
+public class OneOrMore extends Repetition {
+    public OneOrMore(Acceptor acceptor) {
+        super(acceptor, EType.eOneOrMore);
     }
 }

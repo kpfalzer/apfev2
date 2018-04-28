@@ -25,30 +25,29 @@
 
 package apfev2.parser;
 
+import apfev2.runtime.Acceptor;
 import apfev2.runtime.Token;
 
 public class Tokens {
-    private static final Spacing SPACING = new Spacing();
-    
-    private static Token getTokenAcceptor(int code, String toMatch) {
-        return new Token(code, toMatch, SPACING);
+    private static Acceptor getTokenAcceptor(int code, String toMatch) {
+        return new WithSpacing<>(new Token(code, toMatch));
     }
 
-    public static final Token EQ = getTokenAcceptor(2, "=");
-    public static final Token LEFT_ARROW = getTokenAcceptor(3, "<-");
-    public static final Token EXTOP = getTokenAcceptor(4, "<<");
-    public static final Token SLASH = getTokenAcceptor(5, "/");
-    public static final Token BAR = getTokenAcceptor(6, "|");
-    public static final Token AND = getTokenAcceptor(7, "&");
-    public static final Token NOT = getTokenAcceptor(8, "!");
-    public static final Token QUESTION = getTokenAcceptor(9, "?");
-    public static final Token STAR = getTokenAcceptor(10, "*");
-    public static final Token PLUS = getTokenAcceptor(11, "+");
-    public static final Token OPEN = getTokenAcceptor(12, "(");
-    public static final Token CLOSE = getTokenAcceptor(13, ")");
-    public static final Token DOT = getTokenAcceptor(14, ".");
-    public static final Token SEMI = getTokenAcceptor(15, ";");
-    public static final Token COLON = getTokenAcceptor(16, ":");
-    public static final Token LCURLY2 = getTokenAcceptor(17, "{{");
-    public static final Token RCURLY2 = getTokenAcceptor(18, "}}");
+    public static final Acceptor EQ = getTokenAcceptor(2, "=");
+    public static final Acceptor LEFT_ARROW = getTokenAcceptor(3, "<-");
+    public static final Acceptor EXTOP = getTokenAcceptor(4, "<<");
+    public static final Acceptor SLASH = getTokenAcceptor(5, "/");
+    public static final Acceptor BAR = getTokenAcceptor(6, "|");
+    public static final Acceptor AND = getTokenAcceptor(7, "&");
+    public static final Acceptor NOT = getTokenAcceptor(8, "!");
+    public static final Acceptor QUESTION = getTokenAcceptor(9, "?");
+    public static final Acceptor STAR = getTokenAcceptor(10, "*");
+    public static final Acceptor PLUS = getTokenAcceptor(11, "+");
+    public static final Acceptor OPEN = getTokenAcceptor(12, "(");
+    public static final Acceptor CLOSE = getTokenAcceptor(13, ")");
+    public static final Acceptor DOT = getTokenAcceptor(14, ".");
+    public static final Acceptor SEMI = getTokenAcceptor(15, ";");
+    public static final Acceptor COLON = getTokenAcceptor(16, ":");
+    public static final Acceptor LCURLY2 = getTokenAcceptor(17, "{{");
+    public static final Acceptor RCURLY2 = getTokenAcceptor(18, "}}");
 }
