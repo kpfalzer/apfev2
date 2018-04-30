@@ -90,4 +90,8 @@ public class Util {
     public static <T extends Accepted> T downcast(Accepted accepted) {
         return (T)accepted;
     }
+
+    public static String toString(Accepted accepted) {
+        return isNonNull(accepted) ? accepted.toString() : "";
+    }
 }

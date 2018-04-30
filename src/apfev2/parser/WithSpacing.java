@@ -28,6 +28,7 @@ package apfev2.parser;
 import apfev2.runtime.Accepted;
 import apfev2.runtime.Acceptor;
 import apfev2.runtime.CharBuffer;
+import apfev2.runtime.Util;
 
 import static apfev2.runtime.Util.isNonNull;
 import static apfev2.runtime.Util.isNull;
@@ -55,6 +56,11 @@ public class WithSpacing<T extends Acceptor> implements Acceptor {
             super(baseAccepted.location);
             this.baseAccepted = baseAccepted;
             this.spacingAccepted = spacingAccepted;
+        }
+
+        @Override
+        public String toString() {
+            return baseAccepted.toString() + Util.toString(spacingAccepted);
         }
 
         public boolean hasSpacing() {
